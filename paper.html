@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Puzzle</title>
+    <style>
+        body{
+            background-color: black;
+            padding-left: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+        }
+        .puzzlebox {
+    
+            
+            width: 1000px;
+            height: 1000px;
+            display: grid;
+            grid-template-columns: repeat(4, 250px);
+            grid-template-rows: repeat(4, 250px);
+            gap: 2px;
+            border: 5px solid #000;
+            
+            
+        }
+
+        .puzzle-piece {
+            width: 100%;
+            height: 100%;
+            cursor: move;
+            
+        }
+
+        .puzzle-piece {
+            width: 100%;
+            height: 100%;
+            cursor: move;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .puzzle-piece img {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="puzzlebox" id="sortable">
+        
+       
+        <div class="puzzle-piece" id="p1" style="background-image: url(p1.png.png);"></div>
+        <div class="puzzle-piece" id="p2" style="background-image: url(p2.png.png);"></div>
+        <div class="puzzle-piece" id="p3" style="background-image: url(p3.png.png);"></div>
+        <div class="puzzle-piece" id="p4" style="background-image: url(p4.png.png);"></div>
+        <div class="puzzle-piece" id="p5" style="background-image: url(p5.png.png);"></div>
+        <div class="puzzle-piece" id="p6" style="background-image: url(p6.png.png);"></div>
+        <div class="puzzle-piece" id="p7" style="background-image: url(p7.png.png);"></div>
+        <div class="puzzle-piece" id="p8" style="background-image: url(p8.png.png);"></div>
+        <div class="puzzle-piece" id="p9" style="background-image: url(p9.png.png);"></div>
+        <div class="puzzle-piece" id="p10" style="background-image: url(p10.png.png);"></div>
+        <div class="puzzle-piece" id="p11" style="background-image: url(p11.png.png);"></div>
+        <div class="puzzle-piece" id="p12" style="background-image: url(p12.png.png);"></div>
+        <div class="puzzle-piece" id="p13" style="background-image: url(p13.png.png);"></div>
+        <div class="puzzle-piece" id="p14" style="background-image: url(p14.png.png);"></div>
+        <div class="puzzle-piece" id="p15" style="background-image: url(p15.png.png);"></div>
+        <div class="puzzle-piece" id="p16" style="background-image: url(p16.png.png);"></div>
+        
+       
+    </div>
+
+    <canvas id="mycanvas"></canvas>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script>
+        
+        $(function () {
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            const puzzlePieces = $("#sortable").children(".puzzle-piece").toArray();
+            shuffleArray(puzzlePieces);
+            $("#sortable").append(puzzlePieces);
+
+            $("#sortable").sortable({
+                tolerance: "pointer",
+                revert: true,
+                placeholder: "puzzle-piece placeholder",
+                start: function (event, ui) {
+                    ui.helper.css("z-index", 9999);
+                },
+                stop: function (event, ui) {
+                    ui.item.css("z-index", "auto");
+                },
+                update: function (event, ui) {
+                    checkPuzzleCompletion();
+                }
+            });
+        });
+
+        function checkPuzzleCompletion() {
+            const currentOrder = $("#sortable")
+                .children(".puzzle-piece")
+                .toArray()
+                .map(piece => piece.id);
+
+            const originalOrder = ["p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9" ,"p10","p11","p12","p13","p14" ,"p15","p16"];
+            const isCompleted = currentOrder.every((pieceId, index) => pieceId === originalOrder[index]);
+            if (isCompleted) {
+                alert('Bingoooo!!!!! You solved the puzzle!');
+            }
+        }
+
+          
+    </script>
+</body>
+</html>
